@@ -6,6 +6,10 @@ function create_table() {
     if [ $? -eq 1 ]; then
         return
     fi
+    if [ -f "$table_name" ]; then
+        zenity --error --width="400" --text="Table is already created."
+        return
+    fi
     while [ -z "$table_name" ]; do
         zenity --error --width="400" --text="Table name cannot be empty."
         table_name=$(zenity --entry --width="400" --title="Create Table" --text="Enter table name:")
