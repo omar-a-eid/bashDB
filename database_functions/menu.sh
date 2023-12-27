@@ -1,6 +1,10 @@
 #!/bin/bash
 function show_menu()
 {
+    while true; do
+    if [ $? -eq 1 ]; then
+        break
+    fi
     choice=$(zenity --list \
         --title="Bash DBMS Menu" \
         --text="Welcome to bash DBMS" \
@@ -19,4 +23,6 @@ function show_menu()
         *)
           exit;;
     esac
+    done
+
 }
