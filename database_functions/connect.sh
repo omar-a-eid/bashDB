@@ -11,7 +11,11 @@ function connect_database()
     if [ -n "$dbname" ]; then
         if [ -d "$DIR/$dbname" ]; then
             cd "$DIR/$dbname"
-            show_db_menu "$dbname"
+            if [[ "$1" == "sql" ]]; then 
+                show_table_menu_sql "$dbname"
+            else
+                show_db_menu "$dbname"
+            fi
         else
             zenity --error --width="400" --text="Database '$dbname' not found!"
         fi

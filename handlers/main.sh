@@ -11,7 +11,7 @@ function main()
         "SQL" "Using SQL queries to interact with databases " )
     case $choice in
         "Interface") show_menu;;
-        "SQL") list_database;;
+        "SQL") show_menu_sql;;
         *)
           exit;;
     esac

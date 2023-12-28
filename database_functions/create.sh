@@ -3,13 +3,17 @@ DIR="$PWD/database"
 
 function create_database()
 {
-    dbname=$(zenity --entry --width="400" --title="Create Database" --text="Enter name:")
+    if ! [[ "$1" ]]; then
+        dbname=$(zenity --entry --width="400" --title="Create Database" --text="Enter name:")
+        else
+        dbname="$1"
+    fi
     if [ $? -eq 1 ]; then
         return
     fi
-    if [ -d "$DIR/$dbname" ]; then 
+    if [ -d "$DIR/$dbname" ]; then
         zenity --error --width="400" --text="Database is already created."
-        return 
+        return
     fi
     if [ -n "$dbname" ]; then
         mkdir -p "$DIR/$dbname"

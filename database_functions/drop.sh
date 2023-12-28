@@ -3,7 +3,12 @@ DIR="$PWD/database"
 
 function drop_database()
 {
-    dbname=$(zenity --entry --width="400" --title="Drop Database" --text="Enter the database name to drop:")
+    if ! [[ "$1" ]]; then
+        dbname=$(zenity --entry --width="400" --title="Drop Database" --text="Enter the database name to drop:")
+    else
+        dbname="$1"
+    fi
+
     if [ $? -eq 1 ]; then
         return
     fi

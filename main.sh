@@ -17,6 +17,13 @@ source database_functions/menu.sh
 
 source handlers/main.sh
 
+source sql_functions/main.sh
+source sql_functions/database.sh
+source sql_functions/table_menu.sh
+source sql_functions/table.sh
+
+
+
 while true; do
 	main
 done
