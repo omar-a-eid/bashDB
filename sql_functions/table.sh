@@ -8,8 +8,8 @@ function handle_table_query()
             break;
         fi
         query_lowercase=$(echo "$query" | tr '[:upper:]' '[:lower:]')
-        create="^create table .*?[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*\([^;]+\)[[:space:]]*;$"
-        drop="^drop table .*?[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*;$"
+        create="^create table [a-zA-Z_][a-zA-Z0-9_]* \([^;]+\)[[:space:]]*;$"
+        drop="^drop table [a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*;$"
 
 
         if [[ "$query_lowercase" =~ $create ]]; then
