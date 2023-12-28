@@ -15,7 +15,9 @@ function handle_table_query()
         if [[ "$query_lowercase" =~ $create ]]; then
             echo "Valid"
         elif [[ "$query_lowercase" =~ $drop ]]; then
-            echo "Valid"
+            field=$(echo "$query" | awk '{print $3}')
+            name=$(echo "${field}" | awk -F';' '{print $1}')
+            drop_table "$name"
         else
             echo "$query_lowercase"
         fi

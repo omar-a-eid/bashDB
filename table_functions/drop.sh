@@ -1,7 +1,12 @@
 #!/bin/bash
 
 function drop_table() {
-    tname=$(zenity --entry --width="400" --title="Drop Table" --text="Enter the table name to drop:")
+    if ! [[ "$1" ]]; then
+        tname=$(zenity --entry --width="400" --title="Drop Table" --text="Enter the table name to drop:")
+    else
+        tname="$1"
+    fi
+    
     if [ $? -eq 1 ]; then
         return
     fi
