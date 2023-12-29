@@ -1,4 +1,8 @@
 #!/bin/bash
+
+source helpers/table_metadata.sh
+source helpers/zenity.sh
+
 source table_functions/create.sh
 source table_functions/delete.sh
 source table_functions/drop.sh
@@ -23,7 +27,7 @@ source sql_functions/table_menu.sh
 source sql_functions/table.sh
 source sql_functions/create_table.sh
 source sql_functions/select_cols.sh
-
+source sql_functions/insert.sh
 
 while true; do
 	main

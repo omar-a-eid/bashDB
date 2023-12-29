@@ -12,6 +12,7 @@ function handle_table_query()
         create="^create table [a-zA-Z_][a-zA-Z0-9_]* \( [^;]+ \)[[:space:]]*;$"
         drop="^drop table [a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*;$"
         select_pattern="^select (\*|[a-zA-Z_][a-zA-Z0-9_]*(, [a-zA-Z_][a-zA-Z0-9_]*)*) from ([a-zA-Z_][a-zA-Z0-9_]*) ?(where (.+))?;$"
+        insert="^insert into ([a-zA-Z_][a-zA-Z0-9_]*)[[:space:]]*\(([^;]+)\) values[[:space:]]*\(([^;]+)\)[[:space:]]*;$"
         
         if [[ "$query_lowercase" =~ $create ]]; then
 
@@ -44,6 +45,14 @@ function handle_table_query()
                 display_columns "$tname" "$cols"
 
             fi
+        elif [[ "$query_lowercase" =~ $insert ]]; then
+            table_name="${BASH_REMATCH[1]}"
+            fields="${BASH_REMATCH[2]}"
+            values="${BASH_REMATCH[3]}"
+            sql_insert "$table_name" "$fields" "$values"
+            
+        elif [[ "$query_lowercase" =~ $update ]]; then
+            echo "Valid UPDATE command"
             
         else
             zenity --error --width="400" --text="Invalid query."
