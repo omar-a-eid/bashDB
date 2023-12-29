@@ -22,8 +22,7 @@ source sql_functions/database.sh
 source sql_functions/table_menu.sh
 source sql_functions/table.sh
 source sql_functions/create_table.sh
-
-
+source sql_functions/select_cols.sh
 
 
 while true; do
