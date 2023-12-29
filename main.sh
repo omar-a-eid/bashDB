@@ -28,6 +28,8 @@ source sql_functions/table.sh
 source sql_functions/create_table.sh
 source sql_functions/select_cols.sh
 source sql_functions/insert.sh
+source sql_functions/sql_delete.sh
+
 
 while true; do
 	main

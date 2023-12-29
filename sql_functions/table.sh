@@ -11,9 +11,11 @@ function handle_table_query()
         query_lowercase=$(echo "$query" | tr '[:upper:]' '[:lower:]')
         create="^create table [a-zA-Z_][a-zA-Z0-9_]* \( [^;]+ \)[[:space:]]*;$"
         drop="^drop table [a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*;$"
-        select_pattern="^select (\*|[a-zA-Z_][a-zA-Z0-9_]*(, [a-zA-Z_][a-zA-Z0-9_]*)*) from ([a-zA-Z_][a-zA-Z0-9_]*) ?(where (.+))?;$"
+        select_pattern="^select (\*|[a-zA-Z_][a-zA-Z0-9_]*(, [a-zA-Z_][a-zA-Z0-9_]*)*) from ([a-zA-Z_][a-zA-Z0-9_]*) ?(where (.+))?[[:space:]]*;$"
         insert="^insert into ([a-zA-Z_][a-zA-Z0-9_]*)[[:space:]]*\(([^;]+)\) values[[:space:]]*\(([^;]+)\)[[:space:]]*;$"
-        
+        #update="^update ([a-zA-Z_][a-zA-Z0-9_]*) set ([a-zA-Z_][a-zA-Z0-9_]*=[^,]+(, [a-zA-Z_][a-zA-Z0-9_]*=[^,]+)*) where (.+)[[:space:]]*;$"
+        delete_pattern="^delete from ([a-zA-Z_][a-zA-Z0-9_]*) where (.+)[[:space:]]*;$"
+
         if [[ "$query_lowercase" =~ $create ]]; then
 
             tname=$(echo "$query_lowercase" | awk '{print $3}')
@@ -50,9 +52,14 @@ function handle_table_query()
             fields="${BASH_REMATCH[2]}"
             values="${BASH_REMATCH[3]}"
             sql_insert "$table_name" "$fields" "$values"
-            
-        elif [[ "$query_lowercase" =~ $update ]]; then
-            echo "Valid UPDATE command"
+        elif [[ "$query_lowercase" =~ $delete_pattern ]]; then
+            tname="${BASH_REMATCH[1]}"
+            if ! [ -f "$tname" ];then 
+                zenity --error --width="400" --text="Table $tname doesn't exists."
+                return
+            fi
+            where_condition="${BASH_REMATCH[2]}"
+            sql_delete "$tname" "$where_condition"
             
         else
             zenity --error --width="400" --text="Invalid query."
