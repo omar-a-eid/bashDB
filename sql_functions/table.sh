@@ -8,18 +8,20 @@ function handle_table_query()
             break;
         fi
         query_lowercase=$(echo "$query" | tr '[:upper:]' '[:lower:]')
-        create="^create table [a-zA-Z_][a-zA-Z0-9_]* \([^;]+\)[[:space:]]*;$"
+        create="^create table [a-zA-Z_][a-zA-Z0-9_]* \( [^;]+ \)[[:space:]]*;$"
         drop="^drop table [a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*;$"
 
 
         if [[ "$query_lowercase" =~ $create ]]; then
-            echo "Valid"
+            tname=$(echo "$query_lowercase" | awk '{print $3}')
+            create_table_sql "$query_lowercase" "$tname"
         elif [[ "$query_lowercase" =~ $drop ]]; then
-            field=$(echo "$query" | awk '{print $3}')
+            field=$(echo "$query_lowercase" | awk '{print $3}')
             name=$(echo "${field}" | awk -F';' '{print $1}')
             drop_table "$name"
         else
-            echo "$query_lowercase"
+            zenity --error --width="400" --text="Invalid query."
+
         fi
     done
 }
