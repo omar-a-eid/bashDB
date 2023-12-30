@@ -12,7 +12,7 @@ function handle_table_query()
         create="^create table [a-zA-Z_][a-zA-Z0-9_]* \( [^;]+ \)[[:space:]]*;$"
         drop="^drop table [a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*;$"
         select_pattern="^select (\*|[a-zA-Z_][a-zA-Z0-9_]*(, [a-zA-Z_][a-zA-Z0-9_]*)*) from ([a-zA-Z_][a-zA-Z0-9_]*) ?(where (.+))?[[:space:]]*;$"
-        insert="^insert into ([a-zA-Z_][a-zA-Z0-9_]*)[[:space:]]*\(([^;]+)\) values[[:space:]]*\(([^;]+)\)[[:space:]]*;$"
+        insert="^insert into ([a-zA-Z_][a-zA-Z0-9_]*) \(([^;]+)\) values \(([^;]+)\)[[:space:]]*;$"
         #update="^update ([a-zA-Z_][a-zA-Z0-9_]*) set ([a-zA-Z_][a-zA-Z0-9_]*=[^,]+(, [a-zA-Z_][a-zA-Z0-9_]*=[^,]+)*) where (.+)[[:space:]]*;$"
         delete_pattern="^delete from ([a-zA-Z_][a-zA-Z0-9_]*) where (.+)[[:space:]]*;$"
 

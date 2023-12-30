@@ -2,6 +2,7 @@ function read_table_metadata() {
     local table_name="$1"
     if [ -z "$table_name" ]; then
         zenity_error "$table_name not found"
+        return
     fi
 
     local -n cols_var="$2"

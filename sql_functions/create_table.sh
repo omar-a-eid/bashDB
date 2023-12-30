@@ -11,12 +11,16 @@ function create_table_sql() {
         return
     fi
 
+    total_cols=$(echo "$cols" | tr -d '()' | tr ',' '\n' | wc -l)
+    current_col=0
+
     while IFS= read -r col_def; do
+        ((current_col++))
         col_name=$(echo "$col_def" | awk '{gsub(/[(]/,"",$1); print $1}')
         data_type=$(echo "$col_def" | awk '{gsub(/[,]/,"",$2); print $2}')
         primary_key="n"
 
-        if [ "$data_type" != "int" ] && [ "$data_type" != "str" ] && [ "$data_type" ]; then
+        if [ "$data_type" != "int" ] && [ "$data_type" != "str" ] && ! [ "$data_type" ]; then
             zenity --error --width="400" --text="Invalid data type. Please enter 'int' or 'str'."
             return
         fi
@@ -38,13 +42,17 @@ function create_table_sql() {
             fi
         fi
 
-        data+="$col_name|$data_type|$primary_key\n"
+        data+="$col_name|$data_type|$primary_key"
+        
+        # Check if this is the last col_def
+        if ! [ "$current_col" -eq "$total_cols" ]; then
+            data+="\n"
+        fi
     done < <(echo "$cols" | tr -d '()' | tr ',' '\n')
 
     if [ -n "$data" ]; then
-        echo -e "$data" >> ".$2"
+        echo -e "$data" > ".$2"
         touch "$2"
     fi
     zenity --info --width="400" --text="Table has been created successfully."
-
 }

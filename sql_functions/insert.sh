@@ -13,8 +13,8 @@ function sql_insert()
     read_table_metadata "$table_name" "tbl_cols" "tbl_types" "tbl_pks"
 
     # split fields and values inputs into substrings
-    IFS=',' read -ra fields <<< "$input_fields"
-    IFS=',' read -ra values <<< "$input_values"
+    IFS=',' read -ra fields <<< "$(echo "$input_fields" | tr -d ' ')"
+    IFS=',' read -ra values <<< "$(echo "$input_values" | tr -d ' ')"
 
     # verify that number of fields within the query is equal to the number of values
     if [ ${#fields[@]} -ne ${#values[@]} ]; then
@@ -32,6 +32,7 @@ function sql_insert()
     for field in "${fields[@]}"; do
         found=0
         for col in "${tbl_cols[@]}"; do
+
             if [[ "$field" == "$col" ]]; then
                 found=1
                 break
@@ -61,7 +62,7 @@ function sql_insert()
             fi
             ;;
         "str")
-            if ! [[ "${input_map[${tbl_cols[$i]}]}" =~ ^[a-zA-Z]*$ ]]; then
+            if ! [[ "${input_map[${tbl_cols[$i]}]}" =~ ^\'[a-zA-Z]*\'$ ]]; then
                 zenity_error "Invalid Datatype for field: ${tbl_cols[$i]}."
                 return
             fi
